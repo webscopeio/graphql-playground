@@ -1,6 +1,6 @@
 {
   "name": "@webscopeio/graphql-playground-react",
-  "version": "1.7.24",
+  "version": "1.7.25",
   "main": "./lib/lib.js",
   "typings": "./lib/lib.d.ts",
   "description": "GraphQL IDE for better development workflows (GraphQL Subscriptions, interactive docs & collaboration).",
@@ -28,7 +28,6 @@
     "bump": "npm version patch --no-git-tag-version && git add package.json",
     "graphql-faker": "graphql-faker ./tests/schema.faker.graphql",
     "lint": "tslint \"src/**/*.ts{,x}\"",
-    "precommit": "lint-staged",
     "prettier": "prettier --single-quote --no-semi --trailing-comma all --write *.{ts,tsx} 'src/**/*.{ts,tsx}'"
   },
   "files": [
