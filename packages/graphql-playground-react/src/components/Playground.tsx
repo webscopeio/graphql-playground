@@ -92,6 +92,7 @@ export interface Props {
   ) => ApolloLink
   workspaceName?: string
   schema?: GraphQLSchema
+  offset?: string
 }
 
 export interface ReduxProps {
@@ -262,15 +263,15 @@ export class Playground extends React.PureComponent<Props & ReduxProps, State> {
           props.sessionHeaders && props.sessionHeaders.length > 0
             ? props.sessionHeaders
             : props.headers && Object.keys(props.headers).length > 0
-              ? JSON.stringify(props.headers)
-              : undefined,
+            ? JSON.stringify(props.headers)
+            : undefined,
         credentials: props.settings['request.credentials'],
         useTracingHeader:
           !this.initialSchemaFetch &&
           props.settings['tracing.tracingSupported'],
       }
       const schema = await schemaFetcher.fetch(data)
-      schemaFetcher.subscribe(data, newSchema => {
+      schemaFetcher.subscribe(data, (newSchema) => {
         if (
           data.endpoint === this.props.endpoint ||
           data.endpoint === this.props.sessionEndpoint
@@ -305,7 +306,7 @@ export class Playground extends React.PureComponent<Props & ReduxProps, State> {
     return (
       <PlaygroundContainer className="playground">
         <TabBar onNewSession={this.createSession} isApp={this.props.isApp} />
-        <GraphiqlsContainer>
+        <GraphiqlsContainer offset={this.props.offset}>
           <GraphiqlWrapper className="graphiql-wrapper active">
             {this.props.isConfigTab ? (
               <GraphQLConfigEditor
@@ -413,24 +414,21 @@ const mapStateToProps = createStructuredSelector({
   sessionEndpoint: getEndpoint,
 })
 
-export default connect(
-  mapStateToProps,
-  {
-    selectTabIndex,
-    selectNextTab,
-    selectPrevTab,
-    newSession,
-    closeSelectedTab,
-    initState,
-    saveSettings,
-    saveConfig,
-    setTracingSupported,
-    injectHeaders,
-    setConfigString,
-    schemaFetchingError,
-    schemaFetchingSuccess,
-  },
-)(Playground)
+export default connect(mapStateToProps, {
+  selectTabIndex,
+  selectNextTab,
+  selectPrevTab,
+  newSession,
+  closeSelectedTab,
+  initState,
+  saveSettings,
+  saveConfig,
+  setTracingSupported,
+  injectHeaders,
+  setConfigString,
+  schemaFetchingError,
+  schemaFetchingSuccess,
+})(Playground)
 
 const PlaygroundContainer = styled.div`
   flex: 1;
@@ -458,8 +456,8 @@ const PlaygroundContainer = styled.div`
   }
 `
 
-const GraphiqlsContainer = styled.div`
-  height: calc(100vh - 57px);
+const GraphiqlsContainer = styled.div<{ offset?: string }>`
+  height: calc(100vh - 57px - ${({ offset }) => offset ?? '0'});
   position: relative;
   overflow: hidden;
 `
