@@ -6,6 +6,7 @@ import { getLeft } from 'graphiql/dist/utility/elementPosition'
 import {
   addStack,
   toggleDocs,
+  changeWidthDocs,
   changeKeyMove,
   setDocsVisible,
 } from '../../../state/docs/actions'
@@ -35,16 +36,15 @@ interface DispatchFromProps {
 }
 
 export interface Props {
-  schema: GraphQLSchema
-  sessionId: string
-  children: Array<React.ReactElement<any>>
-  maxWidth: number
+  schema?: GraphQLSchema
+  sessionId?: string
+  children?: React.ReactNode
   setWidth: (props?: any) => any
   setActiveContentRef: (ref: any) => void
 }
 
 export interface SideTabContentProps {
-  schema: GraphQLSchema
+  schema?: GraphQLSchema
   sessionId?: string
   ref?: any
   setWidth?: (props?: any) => any
@@ -137,15 +137,15 @@ class SideTabs extends React.Component<
     )
   }
 
-  setRef = ref => {
+  setRef = (ref) => {
     this.ref = ref
   }
 
-  private setContentContainerRef = ref => {
+  private setContentContainerRef = (ref) => {
     this.refContentContainer = ref
   }
 
-  private handleTabClick = idx => () => {
+  private handleTabClick = (idx) => () => {
     if (this.props.docs.activeTabIdx === idx) {
       this.props.setDocsVisible(this.props.sessionId, false)
       return this.props.setWidth()
@@ -164,7 +164,7 @@ class SideTabs extends React.Component<
     }
   }
 
-  private handleKeyDown = e => {
+  private handleKeyDown = (e) => {
     // we don't want to interfere with inputs
     if (
       e.target instanceof HTMLInputElement ||
@@ -185,13 +185,13 @@ class SideTabs extends React.Component<
     }
   }
 
-  private handleDocsResizeStart = downEvent => {
+  private handleDocsResizeStart = (downEvent) => {
     downEvent.preventDefault()
 
     const hadWidth = this.props.docs.docsWidth
     const offset = downEvent.clientX - getLeft(downEvent.target)
 
-    let onMouseMove: any = moveEvent => {
+    let onMouseMove: any = (moveEvent) => {
       if (moveEvent.buttons === 0) {
         return onMouseUp()
       }
@@ -232,7 +232,7 @@ class SideTabs extends React.Component<
     document.addEventListener('mousemove', onMouseMove)
     document.addEventListener('mouseup', onMouseUp)
   }
-  private handleMouseMove = e => {
+  private handleMouseMove = (e) => {
     this.clientX = e.clientX
     this.clientY = e.clientY
     if (
@@ -245,11 +245,12 @@ class SideTabs extends React.Component<
   }
 }
 
-const mapDispatchToProps = dispatch =>
+const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       addStack,
       toggleDocs,
+      changeWidthDocs,
       changeKeyMove,
       setDocsVisible,
     },
@@ -269,6 +270,7 @@ const ConnectedGraphDocs = connect<StateFromProps, DispatchFromProps, Props>(
   { forwardRef: true },
 )(SideTabs)
 
+// @ts-ignore
 ConnectedGraphDocs.Tab = SideTab
 
 export default ConnectedGraphDocs
@@ -283,7 +285,7 @@ const Tabs = styled<TabsProps, 'div'>('div')`
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
   position: absolute;
   right: 0px;
-  z-index: ${p => (p.open ? 2000 : 3)};
+  z-index: ${(p) => (p.open ? 2000 : 3)};
   height: 100%;
   font-family: 'Open Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -319,7 +321,7 @@ const TabContentContainer = styled.div`
   &::before {
     top: 0;
     bottom: 0;
-    background: ${props =>
+    background: ${(props) =>
       props.color ? props.theme.colours[props.color] : '#3D5866'};
     position: absolute;
     z-index: 3;
@@ -358,7 +360,7 @@ const TabsGradient = styled.div`
   z-index: 1;
   pointer-events: none;
   content: '';
-  background: ${p =>
+  background: ${(p) =>
     p.index === 0
       ? `linear-gradient(
 		to right,
