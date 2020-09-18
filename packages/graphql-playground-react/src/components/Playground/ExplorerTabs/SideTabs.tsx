@@ -9,6 +9,7 @@ import {
   changeWidthDocs,
   changeKeyMove,
   setDocsVisible,
+  changeWidthDocs
 } from '../../../state/docs/actions'
 import { GraphQLSchema } from 'graphql'
 import { getSessionDocs } from '../../../state/docs/selectors'
@@ -253,6 +254,7 @@ const mapDispatchToProps = (dispatch) =>
       changeWidthDocs,
       changeKeyMove,
       setDocsVisible,
+      changeWidthDocs
     },
     dispatch,
   )

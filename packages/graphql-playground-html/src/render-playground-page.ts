@@ -27,6 +27,9 @@ export interface ISettings {
   'editor.fontSize': number
   'editor.fontFamily': string
   'request.credentials': string
+  'schema.polling.enable': boolean
+  'schema.polling.endpointFilter': string
+  'schema.polling.interval': number
 }
 
 export interface EditorColours {
@@ -89,7 +92,7 @@ const loading = getLoadingMarkup()
 const CONFIG_ID = 'playground-config';
 
 const getCdnMarkup = ({ version, cdnUrl = '//cdn.jsdelivr.net/npm', faviconUrl }) => {
-  const buildCDNUrl = (packageName: string, suffix: string) => filter(`${cdnUrl}/${packageName}/${version ? `@${version}/` : ''}${suffix}` || '')
+  const buildCDNUrl = (packageName: string, suffix: string) => filter(`${cdnUrl}/${packageName}${version ? `@${version}` : ''}/${suffix}` || '')
   return `
     <link 
       rel="stylesheet" 

@@ -22,6 +22,7 @@ import {
 import { share } from '../../../state/sharing/actions'
 import { openHistory } from '../../../state/general/actions'
 import { getSettings } from '../../../state/workspace/reducers'
+import { Session } from '../../../state/sessions/reducers'
 import { ISettings } from '../../../types'
 import { Session } from '../../../state/sessions/reducers'
 
@@ -31,6 +32,7 @@ export interface Props {
   fixedEndpoint?: boolean
   isPollingSchema: boolean
   endpointUnreachable: boolean
+  session: Session
 
   editEndpoint: (value: string) => void
   prettifyQuery: () => void
@@ -113,7 +115,6 @@ class TopBar extends React.Component<Props, {}> {
     this.props.openHistory()
   }
   getCurl = () => {
-    // no need to rerender the whole time. only on-demand the store is fetched
     const session = this.props.session
     let variables
     try {
