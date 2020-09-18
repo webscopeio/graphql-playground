@@ -10,6 +10,7 @@ import {
   getQueryRunning,
 } from '../../state/sessions/selectors'
 import { connect } from 'react-redux'
+import { context } from '../GraphQLBinApp'
 
 export interface TracingFormat {
   version: 1
@@ -40,7 +41,7 @@ const TracingWrapper = styled.div`
   padding-top: 6px;
   padding-left: 25px;
   padding-right: 25px;
-  color: ${p => p.theme.editorColours.text};
+  color: ${(p) => p.theme.editorColours.text};
   overflow: auto;
   position: relative;
   height: 100%;
@@ -92,7 +93,7 @@ class ResponseTracing extends React.PureComponent<ReduxProps & Props> {
               startOffset={0}
               duration={requestDuration}
             />
-            {tracing.execution.resolvers.map(res => (
+            {tracing.execution.resolvers.map((res) => (
               <TracingRow
                 key={res.path.join('.')}
                 path={res.path}
@@ -115,7 +116,8 @@ class ResponseTracing extends React.PureComponent<ReduxProps & Props> {
         ) : (
           <NotSupported>
             This GraphQL server doesn’t support tracing. See the following page
-            for instructions:<br />
+            for instructions:
+            <br />
             https://github.com/apollographql/apollo-tracing
           </NotSupported>
         )}
@@ -132,4 +134,6 @@ const mapStateToProps = createStructuredSelector({
   queryRunning: getQueryRunning,
 })
 
-export default connect(mapStateToProps)(ResponseTracing)
+export default connect(mapStateToProps, null, null, {
+  context,
+})(ResponseTracing)

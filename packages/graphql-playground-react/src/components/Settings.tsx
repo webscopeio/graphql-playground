@@ -3,6 +3,7 @@ import { SettingsIcon } from './Icons'
 import { styled } from '../styled'
 import { openSettingsTab } from '../state/sessions/actions'
 import { connect } from 'react-redux'
+import { context } from './GraphQLBinApp'
 
 export interface Props {
   onClick: () => void
@@ -25,10 +26,9 @@ class Settings extends React.Component<Props, {}> {
   }
 }
 
-export default connect(
-  null,
-  { onClick: openSettingsTab },
-)(Settings)
+export default connect(null, { onClick: openSettingsTab }, null, {
+  context,
+})(Settings)
 
 const Wrapper = styled.div`
   position: absolute;
@@ -42,13 +42,13 @@ const IconWrapper = styled.div`
   cursor: pointer;
 
   svg {
-    fill: ${p => p.theme.editorColours.icon};
+    fill: ${(p) => p.theme.editorColours.icon};
     transition: 0.1s linear fill;
   }
 
   &:hover {
     svg {
-      fill: ${p => p.theme.editorColours.iconHover};
+      fill: ${(p) => p.theme.editorColours.iconHover};
     }
   }
 `

@@ -51,6 +51,7 @@ import { getSettings, getSettingsString } from '../state/workspace/reducers'
 import { Backoff } from './Playground/util/fibonacci-backoff'
 import { debounce } from 'lodash'
 import { cachedPrintSchema } from './util'
+import { context } from './GraphQLBinApp'
 
 export interface Response {
   resultID: string
@@ -414,21 +415,28 @@ const mapStateToProps = createStructuredSelector({
   sessionEndpoint: getEndpoint,
 })
 
-export default connect(mapStateToProps, {
-  selectTabIndex,
-  selectNextTab,
-  selectPrevTab,
-  newSession,
-  closeSelectedTab,
-  initState,
-  saveSettings,
-  saveConfig,
-  setTracingSupported,
-  injectHeaders,
-  setConfigString,
-  schemaFetchingError,
-  schemaFetchingSuccess,
-})(Playground)
+export default connect(
+  mapStateToProps,
+  {
+    selectTabIndex,
+    selectNextTab,
+    selectPrevTab,
+    newSession,
+    closeSelectedTab,
+    initState,
+    saveSettings,
+    saveConfig,
+    setTracingSupported,
+    injectHeaders,
+    setConfigString,
+    schemaFetchingError,
+    schemaFetchingSuccess,
+  },
+  null,
+  {
+    context,
+  },
+)(Playground)
 
 const PlaygroundContainer = styled.div`
   flex: 1;

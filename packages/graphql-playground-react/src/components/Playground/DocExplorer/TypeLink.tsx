@@ -13,6 +13,7 @@ import {
 } from '../../../state/sessions/selectors'
 import { createSelector } from 'reselect'
 import { styled } from '../../../styled'
+import { context } from '../../GraphQLBinApp'
 
 interface ReduxProps {
   keyMove: boolean
@@ -107,7 +108,7 @@ class TypeLink extends React.Component<
     }
   }
 
-  setRef = ref => {
+  setRef = (ref) => {
     this.ref = ref
   }
 
@@ -152,7 +153,7 @@ class TypeLink extends React.Component<
                   {this.state.collapsed ? (
                     <Dots>...</Dots>
                   ) : (
-                    type.args.map(arg => (
+                    type.args.map((arg) => (
                       <ArgumentInline key={arg.name} arg={arg} />
                     ))
                   )}
@@ -168,9 +169,7 @@ class TypeLink extends React.Component<
             {' '}
             = <span>{`${JSON.stringify(type.defaultValue, null, 2)}`}</span>
           </DefaultValue>
-        ) : (
-          undefined
-        )}
+        ) : undefined}
         {clickable && (
           <IconBox>
             <Triangle />
@@ -227,9 +226,9 @@ const mapStateToProps = (state, { x, y }) => {
   }
 }
 
-const selector = createSelector([mapStateToProps], s => s)
+const selector = createSelector([mapStateToProps], (s) => s)
 
-const mapDispatchToProps = dispatch =>
+const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       addStack,
@@ -240,6 +239,10 @@ const mapDispatchToProps = dispatch =>
 export default connect<ReduxProps, DispatchFromProps, Props>(
   selector,
   mapDispatchToProps,
+  null,
+  {
+    context,
+  },
 )(toJS(TypeLink))
 
 interface DocsCategoryItemProps {
@@ -253,19 +256,19 @@ const DocsCategoryItem = styled<DocsCategoryItemProps, 'div'>('div')`
   overflow: auto;
   font-size: 14px;
   transition: 0.1s background-color;
-  background: ${p =>
+  background: ${(p) =>
     p.active ? p.theme.colours.black07 : p.theme.colours.white};
 
-  cursor: ${p => (p.clickable ? 'pointer' : 'select')};
+  cursor: ${(p) => (p.clickable ? 'pointer' : 'select')};
 
   &:hover {
-    color: ${p => p.theme.colours.white};
+    color: ${(p) => p.theme.colours.white};
     background: #2a7ed3;
     .field-name,
     .type-name,
     .arg-name,
     span {
-      color: ${p => p.theme.colours.white} !important;
+      color: ${(p) => p.theme.colours.white} !important;
     }
   }
   b {
@@ -285,7 +288,7 @@ const IconBox = styled.div`
 `
 
 const DefaultValue = styled.span`
-  color: ${p => p.theme.colours.black30};
+  color: ${(p) => p.theme.colours.black30};
   span {
     color: #1f61a9;
   }

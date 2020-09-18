@@ -1,14 +1,18 @@
 import * as React from 'react'
-import { Provider, connect } from 'react-redux'
+import { Provider, connect, ReactReduxContextValue } from 'react-redux'
 import createStore from '../state/createStore'
 import 'isomorphic-fetch'
 import EndpointPopup from './EndpointPopup'
 import { styled, ThemeProvider, theme as styledTheme } from '../styled'
-import { Store } from 'redux'
+import { AnyAction, Store } from 'redux'
 import PlaygroundWrapper from './PlaygroundWrapper'
 import { injectState } from '../state/workspace/actions'
 
 export const store: Store<any> = createStore()
+
+export const context = React.createContext<
+  ReactReduxContextValue<any, AnyAction>
+>({ store, storeState: store.getState() })
 
 function getParameterByName(name: string): string {
   const url = window.location.href
@@ -91,8 +95,8 @@ class GraphQLBinApp extends React.Component<Props & ReduxProps, State> {
           variables: { id: this.props.match.params.id },
         }),
       })
-        .then(res => res.json())
-        .then(res => {
+        .then((res) => res.json())
+        .then((res) => {
           if (loadingWrapper) {
             loadingWrapper.classList.add('fadeOut')
           }
@@ -123,7 +127,7 @@ class GraphQLBinApp extends React.Component<Props & ReduxProps, State> {
     return (
       <Wrapper>
         {this.state.loading ? null : !this.state.endpoint ||
-        this.state.endpoint.length === 0 ? (
+          this.state.endpoint.length === 0 ? (
           <ThemeProvider theme={styledTheme}>
             <EndpointPopup
               onRequestClose={this.handleChangeEndpoint}
@@ -141,22 +145,22 @@ class GraphQLBinApp extends React.Component<Props & ReduxProps, State> {
     )
   }
 
-  private handleChangeEndpoint = endpoint => {
+  private handleChangeEndpoint = (endpoint) => {
     this.setState({ endpoint })
     localStorage.setItem('last-endpoint', endpoint)
   }
 }
 
-const ConnectedGraphQLBinApp = connect(
-  null,
-  { injectState },
-)(GraphQLBinApp)
+const ConnectedGraphQLBinApp = connect(null, { injectState }, null, {
+  context,
+})(GraphQLBinApp)
 
 // tslint:disable
 export default class GraphQLBinAppHOC extends React.Component<Props> {
   render() {
     return (
       <Provider store={store}>
+        {/* @ts-ignore */}
         <ConnectedGraphQLBinApp {...this.props} />
       </Provider>
     )

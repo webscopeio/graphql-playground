@@ -5,6 +5,7 @@ import { ISettings } from '../../../types'
 import { createStructuredSelector } from 'reselect'
 import { getIsReloadingSchema } from '../../../state/sessions/selectors'
 import { connect } from 'react-redux'
+import { context } from '../../GraphQLBinApp'
 
 export interface Props {
   isPollingSchema: boolean
@@ -34,4 +35,6 @@ const mapStateToProps = createStructuredSelector({
   isReloadingSchema: getIsReloadingSchema,
 })
 
-export default connect(mapStateToProps)(SchemaReload)
+export default connect(mapStateToProps, null, null, {
+  context,
+})(SchemaReload)

@@ -9,6 +9,7 @@ import { setSettingsString, setConfigString } from '../state/general/actions'
 import { editSettings, saveSettings } from '../state/sessions/actions'
 import { getSettingsString } from '../state/workspace/reducers'
 import EditorWrapper, { Container } from './Playground/EditorWrapper'
+import { context } from './GraphQLBinApp'
 
 export interface Props {
   value: string
@@ -93,7 +94,7 @@ class SettingsEditorHOC extends React.Component<
       />
     )
   }
-  handleChange = value => {
+  handleChange = (value) => {
     this.setState({ value })
     this.props.editSettings()
   }
@@ -110,6 +111,10 @@ export const PlaygroundSettingsEditor = connect(
     editSettings,
     saveSettings,
   },
+  null,
+  {
+    context,
+  },
 )(SettingsEditorHOC)
 
 const configSelector = createStructuredSelector({
@@ -121,17 +126,21 @@ export const GraphQLConfigEditor = connect(
   {
     onChange: setConfigString,
   },
+  null,
+  {
+    context,
+  },
 )(SettingsEditor)
 
 const Wrapper = styled.div`
-  background: ${p => p.theme.editorColours.resultBackground};
+  background: ${(p) => p.theme.editorColours.resultBackground};
   position: relative;
   display: flex;
   flex-flow: column;
   flex: 1 1 0;
 
   .CodeMirror {
-    background: ${p => p.theme.editorColours.resultBackground};
+    background: ${(p) => p.theme.editorColours.resultBackground};
     .CodeMirror-code {
       color: rgba(255, 255, 255, 0.7);
     }
@@ -152,7 +161,7 @@ const PlaygroundVersion = styled.span`
   position: absolute;
   right: 20px;
   bottom: 17px;
-  color: ${p => p.theme.editorColours.textInactive};
+  color: ${(p) => p.theme.editorColours.textInactive};
   font-weight: 700;
   margin-right: 14px;
 `

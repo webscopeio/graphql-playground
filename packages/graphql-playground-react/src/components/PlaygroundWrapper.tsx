@@ -17,7 +17,6 @@ import {
   lightEditorColours,
   EditorColours,
 } from '../styled/theme'
-// import OldThemeProvider from './Theme/ThemeProvider'
 import { getActiveEndpoints } from './util'
 import { ISettings } from '../types'
 import { connect } from 'react-redux'
@@ -26,6 +25,7 @@ import { Session, Tab } from '../state/sessions/reducers'
 import { ApolloLink } from 'apollo-link'
 import { injectTabs } from '../state/workspace/actions'
 import { buildSchema, buildClientSchema, GraphQLSchema } from 'graphql'
+import { context } from './GraphQLBinApp'
 
 function getParameterByName(name: string, uri?: string): string | null {
   const url = uri || window.location.href
@@ -200,7 +200,9 @@ class PlaygroundWrapper extends React.Component<
     return endpoint.replace(/^http/, 'ws')
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps: PlaygroundWrapperProps & ReduxProps) {
+  UNSAFE_componentWillReceiveProps(
+    nextProps: PlaygroundWrapperProps & ReduxProps,
+  ) {
     // Reactive props (props that cause a state change upon being changed)
     if (
       nextProps.endpoint !== this.props.endpoint ||
@@ -279,7 +281,9 @@ class PlaygroundWrapper extends React.Component<
       const query = getParameterByName('query')
       if (query) {
         const endpoint = getParameterByName('endpoint') || this.state.endpoint
-        this.props.injectTabs([{ query, endpoint }])
+        this.props.injectTabs([
+          { query, endpoint, headers: this.props.headers },
+        ])
       } else {
         const tabsString = getParameterByName('tabs')
         if (tabsString) {
@@ -534,7 +538,9 @@ const mapStateToProps = (state, ownProps) => {
   return { theme, settings }
 }
 
-export default connect(mapStateToProps, { injectTabs })(PlaygroundWrapper)
+export default connect(mapStateToProps, { injectTabs }, null, {
+  context: context,
+})(PlaygroundWrapper)
 
 async function find(
   iterable: any[],

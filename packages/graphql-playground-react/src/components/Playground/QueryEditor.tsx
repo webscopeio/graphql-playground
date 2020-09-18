@@ -23,6 +23,7 @@ import {
 import EditorWrapper from './EditorWrapper'
 import { styled } from '../../styled'
 import { isIframe } from '../../utils'
+import { context } from '../GraphQLBinApp'
 /**
  * QueryEditor
  *
@@ -128,7 +129,7 @@ export class QueryEditor extends React.PureComponent<Props & ReduxProps, {}> {
       },
       info: {
         schema: this.props.schema,
-        renderDescription: text => md.render(text),
+        renderDescription: (text) => md.render(text),
         onClick: this.props.onClickReference,
       },
       jump: {
@@ -246,7 +247,7 @@ export class QueryEditor extends React.PureComponent<Props & ReduxProps, {}> {
     )
   }
 
-  setRef = ref => {
+  setRef = (ref) => {
     this.node = ref
   }
 
@@ -317,6 +318,10 @@ const mapStateToProps = createStructuredSelector({
 export default connect(
   mapStateToProps,
   { onChange: editQuery, setScrollTop },
+  null,
+  {
+    context,
+  },
 )(QueryEditor)
 
 const Editor = styled.div`
@@ -325,6 +330,6 @@ const Editor = styled.div`
 
   .CodeMirror {
     width: 100%;
-    background: ${p => p.theme.editorColours.editorBackground};
+    background: ${(p) => p.theme.editorColours.editorBackground};
   }
 `

@@ -6,6 +6,7 @@ import { getFile } from '../state/sessions/selectors'
 import { editFile } from '../state/sessions/actions'
 import EditorWrapper, { Container } from './Playground/EditorWrapper'
 import { connect } from 'react-redux'
+import { context } from './GraphQLBinApp'
 
 export interface Props {
   value: string
@@ -35,13 +36,12 @@ const mapStateToProps = createStructuredSelector({
   value: getFile,
 })
 
-export default connect(
-  mapStateToProps,
-  { onChange: editFile },
-)(FileEditor)
+export default connect(mapStateToProps, { onChange: editFile }, null, {
+  context,
+})(FileEditor)
 
 const Wrapper = styled.div`
-  background: ${p => p.theme.editorColours.resultBackground};
+  background: ${(p) => p.theme.editorColours.resultBackground};
   position: relative;
   .variable-editor {
     height: 100% !important;

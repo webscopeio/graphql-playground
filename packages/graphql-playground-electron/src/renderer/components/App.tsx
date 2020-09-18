@@ -16,7 +16,7 @@ import Playground, {
   newFileTab,
   getEndpoint,
   selectAppHistoryItem,
-  AppHistoryItem,
+  AppHistoryItem,, context
 } from 'graphql-playground-react'
 import {
   getGraphQLConfig,
@@ -662,4 +662,8 @@ export default connect(
     newFileTab,
     selectAppHistoryItem,
   },
+  null,
+  {
+    context,
+  }
 )(App)

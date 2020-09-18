@@ -24,6 +24,7 @@ import { openHistory } from '../../../state/general/actions'
 import { getSettings } from '../../../state/workspace/reducers'
 import { Session } from '../../../state/sessions/reducers'
 import { ISettings } from '../../../types'
+import { context } from '../../GraphQLBinApp'
 
 export interface Props {
   endpoint: string
@@ -159,13 +160,20 @@ const mapStateToProps = createStructuredSelector({
   session: getSelectedSession,
 })
 
-export default connect(mapStateToProps, {
-  editEndpoint,
-  prettifyQuery,
-  openHistory,
-  share,
-  refetchSchema,
-})(TopBar)
+export default connect(
+  mapStateToProps,
+  {
+    editEndpoint,
+    prettifyQuery,
+    openHistory,
+    share,
+    refetchSchema,
+  },
+  null,
+  {
+    context,
+  },
+)(TopBar)
 
 export const Button = styled.button`
   text-transform: uppercase;

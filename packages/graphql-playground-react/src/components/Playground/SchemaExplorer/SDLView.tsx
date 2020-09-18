@@ -21,6 +21,7 @@ import SDLHeader from './SDLHeader'
 import SDLEditor from './SDLEditor'
 import { getSettings } from '../../../state/workspace/reducers'
 import { ISettings } from '../../../types'
+import { context } from '../../GraphQLBinApp'
 
 interface StateFromProps {
   docs: {
@@ -40,15 +41,15 @@ interface DispatchFromProps {
   setSchemaUpdated: () => void
 }
 
-class SDLView extends React.Component<
-  SideTabContentProps & StateFromProps
-> {
+class SDLView extends React.Component<SideTabContentProps & StateFromProps> {
   ref
   constructor(props) {
     super(props)
     ;(window as any).d = this
   }
-  UNSAFE_componentWillReceiveProps(nextProps: SideTabContentProps & StateFromProps) {
+  UNSAFE_componentWillReceiveProps(
+    nextProps: SideTabContentProps & StateFromProps,
+  ) {
     // If user use default column size % columnWidth
     // Make the column follow the clicks
     if (!this.props.schema && nextProps.schema) {
@@ -101,12 +102,12 @@ class SDLView extends React.Component<
       </SchemaExplorerContainer>
     )
   }
-  setRef = ref => {
+  setRef = (ref) => {
     this.ref = ref
   }
 }
 
-const mapDispatchToProps = dispatch =>
+const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       toggleDocs,
@@ -128,5 +129,5 @@ export default connect<StateFromProps, DispatchFromProps, SideTabContentProps>(
   // @ts-ignore
   mapDispatchToProps,
   null,
-  { forwardRef: true },
+  { context, forwardRef: true },
 )(SDLView)

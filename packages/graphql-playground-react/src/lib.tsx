@@ -1,12 +1,12 @@
 import PlaygroundWrapper from './components/PlaygroundWrapper'
 import GraphQLEditor from './components/Playground/GraphQLEditor'
-import { store } from './components/GraphQLBinApp'
+import { store, context } from './components/GraphQLBinApp'
 
 export { PlaygroundWrapper as Playground, GraphQLEditor }
 
 export default PlaygroundWrapper
 
-export { store }
+export { store, context }
 
 export * from './state/sessions/actions'
 export * from './state/sessions/selectors'

@@ -16,6 +16,7 @@ import { getSelectedSessionIdFromRoot } from '../../../state/sessions/selectors'
 import { createStructuredSelector } from 'reselect'
 import { styled } from '../../../styled'
 import SideTab from './SideTab'
+import { context } from '../../GraphQLBinApp'
 
 interface StateFromProps {
   docs: {
@@ -267,7 +268,7 @@ const ConnectedGraphDocs = connect<StateFromProps, DispatchFromProps, Props>(
   // @ts-ignore
   mapDispatchToProps,
   null,
-  { forwardRef: true },
+  { context, forwardRef: true },
 )(SideTabs)
 
 // @ts-ignore

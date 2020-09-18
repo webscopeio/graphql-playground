@@ -68,6 +68,7 @@ import {
 import { ResponseRecord } from '../../state/sessions/reducers'
 import { getDocsOpen } from '../../state/docs/selectors'
 import { changeWidthDocs } from '../../state/docs/actions'
+import { context } from '../GraphQLBinApp'
 
 /**
  * The top-level React component for GraphQLEditor, intended to encompass the entire
@@ -637,6 +638,7 @@ connect<any, any, any>(
   },
   null,
   {
+    context,
     forwardRef: true,
   },
 )(GraphQLEditor)

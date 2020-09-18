@@ -7,6 +7,7 @@ import { getResponses } from '../../state/sessions/selectors'
 import { List } from 'immutable'
 import { styled } from '../../styled'
 import { ResponseRecord } from '../../state/sessions/reducers'
+import { context } from '../GraphQLBinApp'
 
 export interface Props {
   setRef: (ref: any) => void
@@ -29,14 +30,13 @@ const Results: React.SFC<Props & ReduxProps> = ({ setRef, responses }) => {
     <ResultWindow ref={setRef} isSubscription={isSubscription}>
       {responses.size <= 1 ? (
         <Response key={'first'} isSubscription={isSubscription}>
-          {responses.size > 1 &&
-            response1.time && (
-              <SubscriptionTime>
-                <SubscriptionTimeText>
-                  {ageOfDate(response1.time)}
-                </SubscriptionTimeText>
-              </SubscriptionTime>
-            )}
+          {responses.size > 1 && response1.time && (
+            <SubscriptionTime>
+              <SubscriptionTimeText>
+                {ageOfDate(response1.time)}
+              </SubscriptionTimeText>
+            </SubscriptionTime>
+          )}
           <ResultWrapper isSubscription={isSubscription}>
             <ResultViewer
               value={response1.date}
@@ -45,19 +45,18 @@ const Results: React.SFC<Props & ReduxProps> = ({ setRef, responses }) => {
           </ResultWrapper>
         </Response>
       ) : (
-        responses.map(response => (
+        responses.map((response) => (
           <Response
             key={response.resultID || String(response.time)}
             isSubscription={isSubscription}
           >
-            {responses.size > 1 &&
-              response.time && (
-                <SubscriptionTime>
-                  <SubscriptionTimeText>
-                    {ageOfDate(response.time)}
-                  </SubscriptionTimeText>
-                </SubscriptionTime>
-              )}
+            {responses.size > 1 && response.time && (
+              <SubscriptionTime>
+                <SubscriptionTimeText>
+                  {ageOfDate(response.time)}
+                </SubscriptionTimeText>
+              </SubscriptionTime>
+            )}
             <ResultWrapper isSubscription={responses.size > 1}>
               <ResultViewer
                 value={response.date}
@@ -75,13 +74,15 @@ const mapStateToProps = createStructuredSelector({
   responses: getResponses,
 })
 
-export default connect(mapStateToProps)(Results)
+export default connect(mapStateToProps, null, null, {
+  context,
+})(Results)
 
 const ResultWindow = styled<ResultWrapperProps, 'div'>('div')`
   flex: 1;
-  height: ${props => (props.isSubscription ? 'auto' : '100%')};
+  height: ${(props) => (props.isSubscription ? 'auto' : '100%')};
   position: relative;
-  overflow: ${props => (props.isSubscription ? 'auto' : 'visible')};
+  overflow: ${(props) => (props.isSubscription ? 'auto' : 'visible')};
   max-height: none !important;
 
   .cm-string {
@@ -101,7 +102,7 @@ const ResultWindow = styled<ResultWrapperProps, 'div'>('div')`
   }
 
   .CodeMirror {
-    background: ${p => p.theme.editorColours.resultBackground};
+    background: ${(p) => p.theme.editorColours.resultBackground};
   }
   .CodeMirror-gutters {
     cursor: col-resize;
@@ -117,7 +118,7 @@ const Response = styled<ResultWrapperProps, 'div'>('div')`
   position: relative;
   display: flex;
   flex: 1;
-  height: ${props => (props.isSubscription ? `auto` : '100%')};
+  height: ${(props) => (props.isSubscription ? `auto` : '100%')};
   flex-direction: column;
   &:not(:first-child):last-of-type {
     margin-bottom: 48px;
@@ -136,13 +137,13 @@ const SubscriptionTime = styled.div`
     top: 9px;
     left: 95px;
     border-top: 1px solid
-      ${p => p.theme.editorColours.subscriptionTimeBoaderTop};
+      ${(p) => p.theme.editorColours.subscriptionTimeBoaderTop};
   }
 `
 
 const SubscriptionTimeText = styled.div`
   font-size: 12px;
-  color: ${p => p.theme.editorColours.subscriptionTimeText};
+  color: ${(p) => p.theme.editorColours.subscriptionTimeText};
   padding-left: 15px;
 `
 
@@ -153,6 +154,6 @@ interface ResultWrapperProps {
 const ResultWrapper = styled<ResultWrapperProps, 'div'>('div')`
   display: flex;
   flex: 1;
-  height: ${props => (props.isSubscription ? `auto` : '100%')};
-  position: ${props => (props.isSubscription ? `relative` : 'static')};
+  height: ${(props) => (props.isSubscription ? `auto` : '100%')};
+  position: ${(props) => (props.isSubscription ? `relative` : 'static')};
 `

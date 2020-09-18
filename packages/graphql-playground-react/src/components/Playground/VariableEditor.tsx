@@ -18,6 +18,7 @@ import {
 import { createStructuredSelector } from 'reselect'
 import { VariableToType } from '../../state/sessions/reducers'
 import { styled } from '../../styled'
+import { context } from '../GraphQLBinApp'
 
 /* tslint:disable */
 
@@ -186,7 +187,7 @@ class VariableEditor extends React.PureComponent<Props & ReduxProps> {
   render() {
     return (
       <Editor
-        ref={node => {
+        ref={(node) => {
           this._node = node
         }}
       />
@@ -242,6 +243,10 @@ export const VariableEditorComponent = connect(
   {
     onChange: editVariables,
   },
+  null,
+  {
+    context,
+  },
 )(VariableEditor)
 
 const mapStateToHeadersProps = createStructuredSelector({
@@ -252,6 +257,10 @@ export const HeadersEditorComponent = connect(
   mapStateToHeadersProps,
   {
     onChange: editHeaders,
+  },
+  null,
+  {
+    context,
   },
 )(VariableEditor)
 
