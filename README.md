@@ -1,5 +1,11 @@
-> **SECURITY WARNING:** both `graphql-playground-html` and [all four (4) of it's middleware dependents](#impacted-packages) until `graphql-playground-html@1.6.22` were subject to an  **XSS Reflection attack vulnerability only to unsanitized user input strings** to the functions therein. This was resolved in `graphql-playground-html@^1.6.22`. [More Information](#security-details)
+> This fork adds new features and fixes some styling and functionality issues in React package.
+>
+> ## New features:
+>
+> - Ability to add top offset with `offset` prop (e.g. "80px").
+> - Exposes custom React `context` you can pass to redux `<Provider store={store} context={context}>` (useful when you have nested `<Provider />` wrappers).
 
+> **SECURITY WARNING:** both `graphql-playground-html` and [all four (4) of it's middleware dependents](#impacted-packages) until `graphql-playground-html@1.6.22` were subject to an **XSS Reflection attack vulnerability only to unsanitized user input strings** to the functions therein. This was resolved in `graphql-playground-html@^1.6.22`. [More Information](#security-details)
 
 <p align="center"><img src="https://imgur.com/5fzMbyV.png" width="269"></p>
 
@@ -29,20 +35,18 @@ $ brew cask install graphql-playground
 - 🚥 Apollo Tracing support
 
 ## Security Details
+
 > **NOTE: only _unsanitized user input_ to the functions in these packages is vulnerable** to the recently reported XSS Reflection attack.
 
 ### Impact
 
-> Impacted are any and all unsanitized **user-defined** input to:
--`renderPlaygroundPage()`
--`koaPlayground()`
--`expressPlayground()`
--`koaPlayground()`
--`lambdaPlayground()
+> Impacted are any and all unsanitized **user-defined** input to: -`renderPlaygroundPage()` -`koaPlayground()` -`expressPlayground()` -`koaPlayground()`
+> -`lambdaPlayground()
 
->  If you used static values, such as `graphql-playground-electron` does in [it's webpack config](https://github.com/prisma-labs/graphql-playground/blob/master/packages/graphql-playground-electron/webpack.config.build.js#L16), as well as the most common middleware implementations out there, they were not vulnerable to the attack.
+> If you used static values, such as `graphql-playground-electron` does in [it's webpack config](https://github.com/prisma-labs/graphql-playground/blob/master/packages/graphql-playground-electron/webpack.config.build.js#L16), as well as the most common middleware implementations out there, they were not vulnerable to the attack.
 
-The only reason this vulnerability exists is because we are using template strings in `renderPlaygroundPage()` with potentially unsanitized user defined variables. This allows an attacker to inject html and javascript into the page. 
+The only reason this vulnerability exists is because we are using template strings in `renderPlaygroundPage()` with potentially unsanitized user defined variables. This allows an attacker to inject html and javascript into the page.
+
 - [Read more about preventing XSS in react](https://pragmaticwebsecurity.com/files/cheatsheets/reactxss.pdf)
 
 Common examples may be user-defined path parameters, query string, unsanitized UI provided values in database, etc., that are used to build template strings or passed directly to a `renderPlaygroundPage()` or the matching middleware function equivalent listed above.
@@ -224,7 +228,7 @@ import { Playground, store } from 'graphql-playground-react'
 
 ReactDOM.render(
   <Provider store={store}>
-    <Playground endpoint='https://api.graph.cool/simple/v1/swapi' />
+    <Playground endpoint="https://api.graph.cool/simple/v1/swapi" />
   </Provider>,
   document.body,
 )
