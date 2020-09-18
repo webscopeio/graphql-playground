@@ -189,7 +189,7 @@ const mapStateToProps = createStructuredSelector({
 })
 
 export default connect(mapStateToProps, { runQuery, stopQuery }, null, {
-  contex,
+  context,
 })(toJS(ExecuteButton))
 
 const Wrapper = styled.div`
