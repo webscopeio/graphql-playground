@@ -200,7 +200,7 @@ class PlaygroundWrapper extends React.Component<
     return endpoint.replace(/^http/, 'ws')
   }
 
-  componentWillReceiveProps(nextProps: PlaygroundWrapperProps & ReduxProps) {
+  UNSAFE_componentWillReceiveProps(nextProps: PlaygroundWrapperProps & ReduxProps) {
     // Reactive props (props that cause a state change upon being changed)
     if (
       nextProps.endpoint !== this.props.endpoint ||
@@ -257,7 +257,7 @@ class PlaygroundWrapper extends React.Component<
     return url
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     const platformToken = getParameterByName('platform-token')
     if (platformToken && platformToken.length > 0) {
       localStorage.setItem('platform-token', platformToken)
