@@ -24,7 +24,6 @@ import { openHistory } from '../../../state/general/actions'
 import { getSettings } from '../../../state/workspace/reducers'
 import { Session } from '../../../state/sessions/reducers'
 import { ISettings } from '../../../types'
-import { Session } from '../../../state/sessions/reducers'
 
 export interface Props {
   endpoint: string
@@ -32,7 +31,6 @@ export interface Props {
   fixedEndpoint?: boolean
   isPollingSchema: boolean
   endpointUnreachable: boolean
-  session: Session
 
   editEndpoint: (value: string) => void
   prettifyQuery: () => void
